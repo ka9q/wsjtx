@@ -739,7 +739,11 @@ int main(int argc, char *argv[])
     unsigned char *symbols, *decdata, *channel_symbols, *apmask, *cw;
     signed char message[]={-9,13,-35,123,57,-39,64,0,0,0,0};
     char *callsign, *grid,  *call_loc_pow;
+#if 1 // KA9Q
+    char *ptr_to_infile;
+#else
     char *ptr_to_infile,*ptr_to_infile_suffix;
+#endif
     char *data_dir=".";
     char wisdom_fname[200],all_fname[200],spots_fname[200];
     char timer_fname[200],hash_fname[200];
