@@ -43,6 +43,8 @@
 #include "wsprd_utils.h"
 #include "wsprsim_utils.h"
 
+#define KA9Q 1 // KA9Q mods
+
 #define max(x,y) ((x) > (y) ? (x) : (y))
 
 extern void osdwspr_ (float [], unsigned char [], int *, unsigned char [], int *, float *);
@@ -739,7 +741,7 @@ int main(int argc, char *argv[])
     unsigned char *symbols, *decdata, *channel_symbols, *apmask, *cw;
     signed char message[]={-9,13,-35,123,57,-39,64,0,0,0,0};
     char *callsign, *grid,  *call_loc_pow;
-#if 1 // KA9Q
+#ifdef KA9Q
     char *ptr_to_infile;
 #else
     char *ptr_to_infile,*ptr_to_infile_suffix;
@@ -942,7 +944,9 @@ int main(int argc, char *argv[])
     ftimer=fopen(timer_fname,"w");
     
     if( strstr(ptr_to_infile,".wav") ) {
+#ifndef KA9Q
         ptr_to_infile_suffix=strstr(ptr_to_infile,".wav");
+#endif
         
         t0 = clock();
         npoints=readwavfile(ptr_to_infile, wspr_type, idat, qdat);
@@ -953,7 +957,9 @@ int main(int argc, char *argv[])
         }
         dialfreq=dialfreq_cmdline - (dialfreq_error*1.0e-06);
     } else if ( strstr(ptr_to_infile,".c2") !=0 )  {
+#ifndef KA9Q
         ptr_to_infile_suffix=strstr(ptr_to_infile,".c2");
+#endif
         npoints=readc2file(ptr_to_infile, idat, qdat, &dialfreq, &wspr_type);
         if( npoints == 1 ) {
             return 1;
@@ -966,7 +972,7 @@ int main(int argc, char *argv[])
     }
     
     // Parse date and time from given filename
-#if 1
+#ifdef KA9Q
     // Modified to use KA9Q-format file names, shared with FT8: 231017_224445.wav
     {
       char *infile = strdup(ptr_to_infile); // In case basename modifies its arg
@@ -1514,7 +1520,7 @@ int main(int argc, char *argv[])
     }
     
     for (i=0; i<uniques; i++) {
-#if 1 // KA9Q
+#ifdef KA9Q
         printf("%6s %4s %3.0f %4.1f %10.6f %2d  %-s \n",
                decodes[i].date,decodes[i].time, decodes[i].snr,decodes[i].dt, decodes[i].freq,
                (int)decodes[i].drift, decodes[i].message);
@@ -1539,7 +1545,7 @@ int main(int argc, char *argv[])
                 decodes[i].jitter);
         
     }
-#if 0 // KA9Q
+#ifndef KA9Q 
     printf("<DecodeFinished>\n");
 #endif
     
