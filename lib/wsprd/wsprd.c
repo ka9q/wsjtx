@@ -35,6 +35,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <fftw3.h>
+#include <libgen.h>
 
 #include "fano.h"
 #include "jelinek.h"
@@ -961,11 +962,20 @@ int main(int argc, char *argv[])
     }
     
     // Parse date and time from given filename
+#if 1
+    // Modified to use KA9Q-format file names, shared with FT8: 231017_224445.wav
+    {
+      char *infile = strdup(ptr_to_infile); // In case basename modifies its arg
+      char *bn = basename(infile);
+      sscanf(bn,"%6s_%4s",date,uttime);
+      free(infile);
+    }
+#else
     strncpy(date,ptr_to_infile_suffix-11,6);
     strncpy(uttime,ptr_to_infile_suffix-4,4);
     date[6]='\0';
     uttime[4]='\0';
-    
+#endif    
     // Do windowed ffts over 2 symbols, stepped by half symbols
     int nffts=4*floor(npoints/512)-1;
     fftin=(fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex)*512);

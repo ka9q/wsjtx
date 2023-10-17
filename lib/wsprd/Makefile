@@ -1,7 +1,7 @@
 CC = gcc
 FC = gfortran
 
-CFLAGS= -I/usr/include -Wall -Wno-missing-braces -Wno-unused-result -O3 -ffast-math
+CFLAGS= -I/usr/include -Wall -Wno-missing-braces -Wno-unused-result -O3 -ffast-math `pkg-config --cflags fftw3`
 LDFLAGS = -L/usr/lib
 FFLAGS = -O2 -Wall -Wno-conversion
 LIBS = -lfftw3f -lm -lgfortran
