@@ -1511,7 +1511,7 @@ int main(int argc, char *argv[])
     
     for (i=0; i<uniques; i++) {
 #if 1 // KA9Q
-        printf("%6 %4s %3.0f %4.1f %10.6f %2d  %-s \n",
+        printf("%6s %4s %3.0f %4.1f %10.6f %2d  %-s \n",
                decodes[i].date,decodes[i].time, decodes[i].snr,decodes[i].dt, decodes[i].freq,
                (int)decodes[i].drift, decodes[i].message);
 #else
