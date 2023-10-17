@@ -1510,9 +1510,15 @@ int main(int argc, char *argv[])
     }
     
     for (i=0; i<uniques; i++) {
+#if 1 // KA9Q
+        printf("%6 %4s %3.0f %4.1f %10.6f %2d  %-s \n",
+               decodes[i].date,decodes[i].time, decodes[i].snr,decodes[i].dt, decodes[i].freq,
+               (int)decodes[i].drift, decodes[i].message);
+#else
         printf("%4s %3.0f %4.1f %10.6f %2d  %-s \n",
                decodes[i].time, decodes[i].snr,decodes[i].dt, decodes[i].freq,
                (int)decodes[i].drift, decodes[i].message);
+#endif
         fprintf(fall_wspr,
                 "%6s %4s %3.0f %5.2f %11.7f  %-22s %2d %5.2f %2d %2d %4d %2d %3d %5u %5d\n",
                 decodes[i].date, decodes[i].time, decodes[i].snr,
@@ -1529,7 +1535,9 @@ int main(int argc, char *argv[])
                 decodes[i].jitter);
         
     }
+#if 0 // KA9Q
     printf("<DecodeFinished>\n");
+#endif
     
     fftwf_free(fftin);
     fftwf_free(fftout);
