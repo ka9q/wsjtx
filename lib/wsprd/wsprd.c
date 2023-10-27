@@ -741,11 +741,7 @@ int main(int argc, char *argv[])
     unsigned char *symbols, *decdata, *channel_symbols, *apmask, *cw;
     signed char message[]={-9,13,-35,123,57,-39,64,0,0,0,0};
     char *callsign, *grid,  *call_loc_pow;
-#ifdef KA9Q
-    char *ptr_to_infile;
-#else
     char *ptr_to_infile,*ptr_to_infile_suffix;
-#endif
     char *data_dir=".";
     char wisdom_fname[200],all_fname[200],spots_fname[200];
     char timer_fname[200],hash_fname[200];
@@ -944,9 +940,7 @@ int main(int argc, char *argv[])
     ftimer=fopen(timer_fname,"w");
     
     if( strstr(ptr_to_infile,".wav") ) {
-#ifndef KA9Q
         ptr_to_infile_suffix=strstr(ptr_to_infile,".wav");
-#endif
         
         t0 = clock();
         npoints=readwavfile(ptr_to_infile, wspr_type, idat, qdat);
@@ -957,9 +951,7 @@ int main(int argc, char *argv[])
         }
         dialfreq=dialfreq_cmdline - (dialfreq_error*1.0e-06);
     } else if ( strstr(ptr_to_infile,".c2") !=0 )  {
-#ifndef KA9Q
         ptr_to_infile_suffix=strstr(ptr_to_infile,".c2");
-#endif
         npoints=readc2file(ptr_to_infile, idat, qdat, &dialfreq, &wspr_type);
         if( npoints == 1 ) {
             return 1;
@@ -972,20 +964,10 @@ int main(int argc, char *argv[])
     }
     
     // Parse date and time from given filename
-#ifdef KA9Q
-    // Modified to use KA9Q-format file names, shared with FT8: 231017_224445.wav
-    {
-      char *infile = strdup(ptr_to_infile); // In case basename modifies its arg
-      char *bn = basename(infile);
-      sscanf(bn,"%6s_%4s",date,uttime);
-      free(infile);
-    }
-#else
     strncpy(date,ptr_to_infile_suffix-11,6);
     strncpy(uttime,ptr_to_infile_suffix-4,4);
     date[6]='\0';
     uttime[4]='\0';
-#endif    
     // Do windowed ffts over 2 symbols, stepped by half symbols
     int nffts=4*floor(npoints/512)-1;
     fftin=(fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex)*512);
