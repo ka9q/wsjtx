@@ -20,6 +20,9 @@ LIBS = -lfftw3f -lm -lgfortran
 
 all:    wsprd wsprsim
 
+install: all
+	install -t /usr/local/bin wsprd wsprsim
+
 DEPS =  wsprsim_utils.h wsprd_utils.h fano.h jelinek.h nhash.h
 
 indexx.o: ../indexx.f90
